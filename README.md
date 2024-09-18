@@ -146,4 +146,35 @@ class Index extends Template
 
 #This also should only affect the en_gb site.
 
+#Switch Store
+
+edit file 'pub/.htaccess'
+
+Add this to the top:
+```bash
+SetEnvIf Host audio-technica.awaredev.site MAGE_RUN_CODE=en_gb
+SetEnvIf Host audio-technica.awaredev.site MAGE_RUN_TYPE=store
+```
+
+
+
+### Updating Core Configuration
+
+1. **Check the `core_config_data` Table:**
+   - Search for the following keys:
+     - `web`
+     - `web/secure/base_url`
+     - `web/unsecure/base_url`
+
+2. **Update the URLs:**
+   - For example, change:
+     - `https://staging.audio-technica.com/de-de/`
+   - To:
+     - `https://audio-technica.awaredev.site/`
+
+3. **Remove Unnecessary Entries:**
+   - Delete the key:
+     - `web/cookie/cookie_domain`
+
+
 
