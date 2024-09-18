@@ -26,6 +26,11 @@
 
 ```
 
+setting should be here :
+![image](https://github.com/user-attachments/assets/2ea82d7d-9c0a-456c-a053-0c772bf83b32)
+
+
+
 Next step use helper:
 create 'app/code/LandingPage/Form/Helper/Data.php'
 
@@ -69,32 +74,63 @@ class Data extends AbstractHelper
 }
 ```
 
-![image](https://github.com/user-attachments/assets/2ea82d7d-9c0a-456c-a053-0c772bf83b32)
-
-
-create 'app/code/LandingPage/Form/Helper/Data.php'
-
+next use helper in block:
 ```php
 <?php
-namespace LandingPage\Form\Helper;
+namespace LandingPage\Form\Block;
 
-use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Framework\App\Helper\Context;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Store\Model\ScopeInterface;
+use Magento\Framework\View\Element\Template;
+use Magento\Customer\Model\Session as CustomerSession;
+use Magento\Customer\Model\Url as CustomerUrl;
+use LandingPage\Form\Helper\Data as FormHelper;
 
-class Data extends AbstractHelper
+class Index extends Template
 {
-    const XML_PATH_MODULE_ENABLED = 'landingpage_form/general/enable_module';
+    protected $customerSession;
+    protected $customerUrl;
+    protected $formHelper;
 
-    protected $scopeConfig;
-
+    /**
+     * Construct
+     *
+     * @param \Magento\Framework\View\Element\Template\Context $context
+     * @param CustomerSession $customerSession
+     * @param CustomerUrl $customerUrl
+     * @param FormHelper $formHelper
+     * @param array $data
+     */
     public function __construct(
-        Context $context,
-        ScopeConfigInterface $scopeConfig
+        \Magento\Framework\View\Element\Template\Context $context,
+        CustomerSession $customerSession,
+        CustomerUrl $customerUrl,
+        FormHelper $formHelper,
+        array $data = []
     ) {
-        parent::__construct($context);
-        $this->scopeConfig = $scopeConfig;
+        parent::__construct($context, $data);
+        $this->customerSession = $customerSession;
+        $this->customerUrl = $customerUrl;
+        $this->formHelper = $formHelper;
+    }
+
+    public function getCustomerName()
+    {
+        $customer = $this->customerSession->getCustomer();
+        $name = $customer->getName();
+
+        return $name;
+    }
+
+    public function getCustomerEmail()
+    {
+        $customer = $this->customerSession->getCustomer();
+        $email = $customer->getEmail();
+
+        return $email;
+    }
+
+    public function getLoginUrl()
+    {
+        return $this->getUrl('customer/account/login');
     }
 
     /**
@@ -104,11 +140,7 @@ class Data extends AbstractHelper
      */
     public function isModuleEnabled()
     {
-        return $this->scopeConfig->isSetFlag(
-            self::XML_PATH_MODULE_ENABLED,
-            ScopeInterface::SCOPE_STORE
-        );
+        return $this->formHelper->isModuleEnabled();
     }
 }
 ```
-
