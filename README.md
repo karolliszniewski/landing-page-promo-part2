@@ -7,7 +7,7 @@
 <!-- app/code/LandingPage/Form/etc/adminhtml/system.xml -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/system_file.xsd">
     <system>
-        <section id="landingpage_form_section" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+        <section id="landingpage_form" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>LandingPage Form Configuration</label>
             <tab>general</tab>
             <resource>LandingPage_Form::config</resource>
@@ -23,7 +23,6 @@
         </section>
     </system>
 </config>
-
 ```
 
 setting should be here :
