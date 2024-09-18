@@ -175,6 +175,25 @@ SetEnvIf Host audio-technica.awaredev.site MAGE_RUN_TYPE=store
 3. **Remove Unnecessary Entries:**
    - Delete the key:
      - `web/cookie/cookie_domain`
+    
+#Create child template 
+
+put inside block another block (it wil make child)
+```xml
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="LandingPage\Form\Block\Index" name="form_block" template="LandingPage_Form::content.phtml">
+                <block class="LandingPage\Form\Block\Index" name="form_block_child_disabled" template="LandingPage_Form::disabled.phtml"/>
+                <block class="LandingPage\Form\Block\Index" name="form_block_child_session" template="LandingPage_Form::session.phtml"/>
+            </block>   
+        </referenceContainer>
+    </body>
+</page>
+```
+
+
+
 
 
 
