@@ -244,6 +244,38 @@ class FormData extends AbstractModel
 }
 ```
 
+create 'app/code/LandingPage/Form/Model/ResourceModel/FormData'
+
+```php
+<?php
+namespace LandingPage\Form\Model\ResourceModel;
+
+use Magento\Framework\Model\ResourceModel\Db\AbstractDB;
+
+class FormData extends AbstractDb{
+    protected function _contruct(){
+        $this->_int('landingpage_form', 'id');
+    }
+}
+```
+
+create 'app/code/LandingPage/Form/Model/ResourceModel/FormData/Collection.php'
+
+```php
+<?php
+namespace LandingPage\Form\Model\ResourceModel\FormData;
+
+use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
+use LandingPage\Form\Model\FormData;
+use LandingPage\Form\Model\ResourceModel\FormData as FormDataResource;
+
+class Collection extends AbstractCollection{
+    protected function _construct(){
+        $this->_int(FormData::class,FormDataResource::class);
+    }
+}
+```
+
 
 
 
