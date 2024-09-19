@@ -192,6 +192,13 @@ put inside block another block (it wil make child)
 </page>
 ```
 
+inside 'content.phtml' you can call child block like this :
+
+```php
+    $block->getChildHtml('form_block_child_session');
+```
+
+
 
 
 
