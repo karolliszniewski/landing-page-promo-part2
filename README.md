@@ -276,6 +276,52 @@ class Collection extends AbstractCollection{
 }
 ```
 
+### Updated File: `app/code/LandingPage/Form/view/frontend/templates/form/form.phtml`
+
+**Changes:**
+- Added the missing field: `comment`
+- The form now submits to the block method: `block->getUrl('landingpage/index/post')` using the `POST` method
+- Each form requires a unique token, so a `formKey` has been added for security
+
+```phtml
+<div style="width:100%;display:flex;justify-content:center;align-items:center;" class="account_container-inner">
+    <form style="width:50%;" action="<?= $block->getUrl('landingpage/index/post') ?>" class="form" method="post" id="user-info-form">
+        <?= $block->getBlockHtml('formkey') ?>
+        <fieldset class="fieldset">
+            <div class="field">
+                <label class="label label--required" for="username"><span><?= __("Name")?></span></label>
+                <input name="username" class="input" required id="username" type="text" title="Username" value="<?=$block->getCustomerName()?>" disabled require>
+            </div>      
+             
+            <div class="field">
+            <label class="label label--required" for="username"><span><?= __("Email")?></span></label>
+                <input name="email" class="input" required id="email" type="email" title="Email" value="<?=$block->getCustomerEmail()?>" disabled>
+            </div>
+            <label class="label" for="username"><span><?= __("Comment")?></span></label>
+            <div class="field">
+            
+                <textarea name="comment" class="input" id="comment" title="Comment" > </textarea>
+            </div>
+            <!-- Hidden fields to send username and email -->
+            <input type="hidden" name="username" value="<?=$block->getCustomerName()?>">
+            <input type="hidden" name="email" value="<?=$block->getCustomerEmail()?>">
+
+            <div class="actions">
+                <button type="button" class="action-primary" name="add-to-cart">
+                    <span><?= __("Add to Cart") ?></span>    
+                </button>
+                <button class="action-secondary" type="submit">
+                    <span><?= __("Read More") ?></span>
+                </button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+```
+
+
+
+
 
 
 
