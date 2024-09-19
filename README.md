@@ -320,6 +320,95 @@ class Collection extends AbstractCollection{
 ```
 
 
+create 'app/code/LandingPage/Form/Controller/Index/Post.php'
+
+```php
+<?php
+namespace LandingPage\Form\Controller\Index;
+
+use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\Action\Action;
+use Magento\Framework\Controller\ResultFactory;
+use Psr\Log\LoggerInterface;
+// defined in 'app/code/LandingPage/Form/Model/FormData.php'
+use LandingPage\Form\Model\FormDataFactory;
+use Magento\Customer\Api\CustomerRepositoryInterface;
+
+class Post extends Action
+{
+    protected $formDataFactory;
+    protected $logger;
+
+    /**
+     * Constructor
+     * 
+     * @param Context $context
+     * @param FormDataFactory $formDataFactory
+     * @param LoggerInterface $logger
+     */
+    public function __construct(
+        Context $context,
+        FormDataFactory $formDataFactory,
+        CustomerRepositoryInterface $customerRepository,
+        LoggerInterface $logger
+    ) {
+        parent::__construct($context);
+        $this->formDataFactory = $formDataFactory;
+        $this->customerRepository = $customerRepository;
+        $this->logger = $logger;
+    }
+
+
+    public function execute()
+    {
+        
+        $postData = $this->getRequest()->getPostValue();
+
+        
+        if (!empty($postData)) {
+
+            $customer = $this->getCustomer();
+
+            $customer_id = $customer->getId();
+           // Initialize the model
+           $formData = $this->formDataFactory->create();
+
+           //setData is from AbstractModel
+           $formData->setData([
+            'customer_id' => $customer_id,
+            'comment' => $postData['comment']
+           ]
+           );
+
+           // Save data to the database
+
+           try{
+            $formData->save();
+
+            
+           } catch (\Exception $e) {
+            dd($e->getMessage());
+           }
+
+        } 
+
+        // Optional: further processing can go here after debugging.
+    }
+
+    protected function getCustomer()
+    {
+        try{
+            return $this->customerRepository->get($postData['email']);
+        } catch (\Exception $e){
+            return false;
+        }
+    }
+}
+```
+
+
+
+
 
 
 
