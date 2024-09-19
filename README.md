@@ -407,7 +407,101 @@ class Post extends Action
 ```
 
 
+now lets change $formData->save(); to interface
 
+create interface 'app/code/LandingPage/Form/Api/FormDataInterface.php'
+
+```php
+<?php
+namespace LandingPage\Form\Api;
+
+use LandingPage\Form\Api\Data\FormDataInterface;
+
+interface FormDataRepositoryInterface
+{
+    /**
+     * Save form data.
+     *
+     * @param FormDataInterface $formData
+     * @return FormDataInterface
+     */
+    public function save(FormDataInterface $formData);
+
+    /**
+     * Get form data by ID.
+     *
+     * @param int $id
+     * @return FormDataInterface
+     */
+    public function getById($id);
+
+    /**
+     * Delete form data.
+     *
+     * @param FormDataInterface $formData
+     * @return bool
+     */
+    public function delete(FormDataInterface $formData);
+}
+```
+
+
+implement interface 'app/code/LandingPage/Form/Model/FormDataRepository.php'
+
+```php
+<?php
+namespace LandingPage\Form\Model;
+
+use LandingPage\Form\Api\FormDataRepositoryInterface;
+use LandingPage\Form\Api\Data\FormDataInterface;
+use LandingPage\Form\Model\ResourceModel\FormData as FormDataResource;
+use Magento\Framework\Exception\CouldNotSaveException;
+
+class FormDataRepository implements FormDataRepositoryInterface
+{
+    protected $resource;
+
+    public function __construct(FormDataResource $resource)
+    {
+        $this->resource = $resource;
+    }
+
+    public function save(FormDataInterface $formData)
+    {
+        try {
+            $this->resource->save($formData);
+        } catch (\Exception $exception) {
+            throw new CouldNotSaveException(__($exception->getMessage()));
+        }
+        return $formData;
+    }
+
+    public function getById($id)
+    {
+        $formData = $this->formDataFactory->create();
+        $this->resource->load($formData, $id);
+        return $formData;
+    }
+
+    public function delete(FormDataInterface $formData)
+    {
+        try {
+            $this->resource->delete($formData);
+        } catch (\Exception $exception) {
+            throw new CouldNotDeleteException(__($exception->getMessage()));
+        }
+        return true;
+    }
+}
+```
+
+create 'app/code/LandingPage/Form/etc/di.xml'
+
+```xml
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="LandingPage\Form\Api\FormDataRepositoryInterface" type="LandingPage\Form\Model\FormDataRepository" />
+</config>
+```
 
 
 
