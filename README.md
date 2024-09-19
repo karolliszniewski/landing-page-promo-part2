@@ -198,6 +198,51 @@ inside 'content.phtml' you can call child block like this :
     $block->getChildHtml('form_block_child_session');
 ```
 
+#The data should be collected and saved to the table:
+
+create 'app/code/LandingPage/Form/etc/db_schema.xml'
+
+```xml
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+
+    <table name="landingpage_form" resource="default" engine="innodb" comment="Landing Page Form Table">
+        <column xsi:type="int" name="id" nullable="false" identity="true" unsigned="true" comment="Form ID"/>
+        <column xsi:type="int" name="customer_id" nullable="false" comment="Customer ID"/>
+        <column xsi:type="varchar" name="comment" nullable="true" length="255" comment="Comment"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+
+</schema>
+```
+
+run
+
+```bash
+bin/magento setup:upgrade
+```
+
+
+create 'app/code/LandingPage/Form/Model/FormData.php'
+```php
+<?php
+// send FormData to AbstractModel
+namespace LandingPage\Form\Model;
+
+use Magento\Framework\Model\AbstractModel;
+
+
+class FormData extends AbstractModel
+{
+    protected function _construct()
+    {
+        $this->_init(\LandingPage\Form\Model\ResourceModel\FormData::class);
+    }
+}
+```
 
 
 
