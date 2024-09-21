@@ -26,8 +26,7 @@
 ```
 
 setting should be here :
-![image](https://github.com/user-attachments/assets/2ea82d7d-9c0a-456c-a053-0c772bf83b32)
-
+![368539070-2ea82d7d-9c0a-456c-a053-0c772bf83b32](https://github.com/user-attachments/assets/e14eb300-83b5-4129-b8cb-09101c774e6c)
 
 
 Next step use helper:
